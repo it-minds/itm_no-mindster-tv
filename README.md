@@ -25,6 +25,7 @@ This project uses [`husky`](https://typicode.github.io/husky/) to manage git hoo
 The following commit hooks are run on `git commit`:
 - `commitlint` to ensure that your commit message follows the [conventional commits](https://www.conventionalcommits.org/en/v1.0.0/) format.
 - `npm run test` to ensure that your code passes all tests
+- `commitlint` fixes linting errors with `eslint --fix` and formats your code with `prettier`
 
 You should also adhere to the following rules when committing:
 - The commit footer should contain the issue number in the format `fix #<issue number>` (with 4 digits and leading zero's). 
