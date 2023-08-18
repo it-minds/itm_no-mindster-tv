@@ -1,0 +1,28 @@
+# Contribute
+
+## Testing
+
+This project uses [`jest`](https://jestjs.io/) and [`react-testing-library`](https://testing-library.com/) for testing.
+It is intended that all developers do test-driven development (TDD) when working on this project. Therefor,
+coverage rules are high. The exact rules are defined in `jest.config.js`.
+
+You can run tests and coverage with the following commands:
+- `npm run test` to run tests
+- `npm run coverage` generates a coverage report
+- `npm run coverage:changed` generates a coverage report for changed files after the last commit
+- `npm run coverage:last-commit` generates a coverage report for the files changed in the last commit
+
+## Comitting
+
+This project uses [`husky`](https://typicode.github.io/husky/) to manage git hooks
+
+The following commit hooks are run on `git commit`:
+- `commitlint` to ensure that your commit message follows the [conventional commits](https://www.conventionalcommits.org/en/v1.0.0/) format.
+- `npm run test` to ensure that your code passes all tests
+- `lintstaged` fixes linting errors with `eslint --fix` and formats your code with `prettier`
+
+You should also adhere to the following rules when committing:
+- The commit footer should contain the issue number in the format `fix #<issue number>` (with 4 digits and leading zero's).
+  For example, `fix #0001` or `re #0001` in the case of revisiting an issue.
+
+You can use `npm run cm` to get an interactive CLI tool for composing commit messages.
