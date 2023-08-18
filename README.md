@@ -18,17 +18,6 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
 
-## Committing
+## Contribute
 
-This project uses [`husky`](https://typicode.github.io/husky/) to manage git hooks
-
-The following commit hooks are run on `git commit`:
-- `commitlint` to ensure that your commit message follows the [conventional commits](https://www.conventionalcommits.org/en/v1.0.0/) format.
-- `npm run test` to ensure that your code passes all tests
-- `commitlint` fixes linting errors with `eslint --fix` and formats your code with `prettier`
-
-You should also adhere to the following rules when committing:
-- The commit footer should contain the issue number in the format `fix #<issue number>` (with 4 digits and leading zero's). 
-  For example, `fix #0001` or `re #0001` in the case of revisiting an issue.
-
-You can use `npm run cm` to get an interactive CLI tool for composing commit messages.
+Check out the [contributing guide](./CONTRIBUTING.md) to learn how you can help improve this project.
