@@ -12,7 +12,16 @@ You can run tests and coverage with the following commands:
 - `npm run coverage:changed` generates a coverage report for changed files after the last commit
 - `npm run coverage:last-commit` generates a coverage report for the files changed in the last commit
 
-## Comitting
+## Storybook
+
+This project uses [`storybook`](https://storybook.js.org/) to develop and document components in isolation.
+It is intended that all developers use storybook to develop components. Therefor, all components should have
+a storybook story. This is to ensure that components are developed in isolation and are documented.
+
+You can run storybook with the following command:
+- `npm run storybook` to run storybook
+
+## Committing
 
 This project uses [`husky`](https://typicode.github.io/husky/) to manage git hooks
 
