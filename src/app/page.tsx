@@ -1,4 +1,4 @@
-import IframeModule from "@/modules/iframe-module/iframe-module";
+import IframeModule from "@/commons/iframe-module/iframe-module";
 import Image from "next/image";
 
 export default function Home() {
