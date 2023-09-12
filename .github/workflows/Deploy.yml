@@ -1,0 +1,31 @@
+name: Deploy to Azure
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-image-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Log in to Azure
+        uses: azure/docker-login@v1
+        env:
+          REGISTRY_USERNAME: ${{ vars.REGISTRY_USERNAME }}
+        with:
+          login-server: ${{ vars.REGISTRY_URL }}
+          username: ${{ vars.REGISTRY_USERNAME }}
+          password: ${{ secrets.AZURE_REGISTRY_PASSWORD }}
+
+      - name: Build Docker image
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./Dockerfile.prod
+          tags: ${{ vars.REGISTRY_URL }}/${{ vars.IMAGE_NAME }}:latest
+
+      - name: Push docker image to container registry
+        run: docker push ${{ vars.REGISTRY_URL }}/${{ vars.IMAGE_NAME }}:latest
