@@ -35,3 +35,29 @@ You should also adhere to the following rules when committing:
   For example, `fix #0001` or `re #0001` in the case of revisiting an issue.
 
 You can use `npm run cm` to get an interactive CLI tool for composing commit messages.
+
+## Docker
+
+This project uses [`docker`](https://www.docker.com/) to run the application in a containerized environment.
+The production docker file is a multi-stage build to limit the size of the image.
+
+To build the docker image, run `docker build -t <image name> .` in the root of the project.
+To run the docker image, run `docker run -p 3000:3000 <image name>`.
+
+## Deployment
+
+We deploy to azure with github actions whenever pushed to the `main` branch. 
+You can also deploy manually. You will need to install the azure cli first.
+
+**Deploy manually**
+```
+az login
+az acr login --name mindstertv
+
+docker build -t mindstertv.azurecr.io/mindster-tv .
+
+docker push mindstertv.azurecr.io/mindster-tv
+```
+
+*NB:* You will need azure access to deploy manually
+
