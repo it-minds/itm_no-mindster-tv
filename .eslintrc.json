@@ -3,5 +3,13 @@
       "next/core-web-vitals",
       "plugin:storybook/recommended",
       "prettier"
-    ]
+    ],
+    "rules": {
+      "no-restricted-imports": ["error", {
+        "patterns": [{
+          "group": ["@nextui-org/react"],
+            "message": "Please import from @nextui-org/<component-name> instead to allow for server-side rendering. See `CONTRIBUTING.md` for more information."
+        }]
+      }]
+    }
 }
