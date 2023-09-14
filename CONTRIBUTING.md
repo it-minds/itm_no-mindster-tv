@@ -36,6 +36,33 @@ You should also adhere to the following rules when committing:
 
 You can use `npm run cm` to get an interactive CLI tool for composing commit messages.
 
+## Component framework
+
+This project uses [`NextUI`](https://nextui.org/) as a component framework. 
+NextUI is built on top of [`tailwindcss`](https://tailwindcss.com/).
+
+### Importing components
+
+**Rule:**
+Importing components from NextUI should be from `@nextui-org/<component-name>`
+and not from `@nextui-org/react`. This is to ensure components work with server-side rendering.
+
+**Exception:**
+If you need to import something else from `@nextui-org/react` (e.g. `NextUIProvider`)
+you need to disable the eslint rule for that line with:
+```
+/*
+* Working around NextUI import rule by disabling the rule for this line.
+* See `CONTRIBUTING.md` for more information.
+*/
+/* eslint-disable-next-line no-restricted-imports */
+```
+
+
+### Tips
+Most popular IDEs have plugins for tailwindcss that provide intelligent auto-completion
+relative to the tailwindcss theme configuration.
+
 ## Docker
 
 This project uses [`docker`](https://www.docker.com/) to run the application in a containerized environment.
@@ -60,4 +87,3 @@ docker push mindstertv.azurecr.io/mindster-tv
 ```
 
 *NB:* You will need azure access to deploy manually
-
