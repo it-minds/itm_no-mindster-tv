@@ -1,11 +1,12 @@
-import IframeModule from "@/commons/iframe-module/iframe-module";
+import IframeModule from "@/commons/components/iframe-module/iframe-module";
 import { Button } from "@nextui-org/button";
-import Frame from "@/commons/frame/frame";
+import Frame from "@/commons/components/frame/frame";
 import Image from "next/image";
 import LogoWhite from "@/commons/assets/logo/logo-white.png";
 import YellowHexagonShape from "@/commons/assets/shapes/hexagon-yellow.png";
 import BlueTriangleShape from "@/commons/assets/shapes/triangle-blue.png";
-import Framed from "@/commons/framed/framed";
+import Framed from "@/commons/components/framed/framed";
+import ClockModule from "@/modules/clock/clock-module";
 
 export default function Home() {
     return (
@@ -30,15 +31,20 @@ export default function Home() {
                     title="Yr"
                 />
             </Framed>
-            <Framed row={6} col={8} height={1} width={5}>
-                <Image
-                    src={LogoWhite}
-                    alt="Twoday It Minds logo"
-                    quality={100}
-                    priority={true}
-                />
+            <Framed row={6} col={2} height={1} width={2}>
+                <ClockModule />
             </Framed>
-            <div className="absolute bottom-[-27vw] left-[-25vw] h-[60vw] w-[55vw]">
+            <Framed row={6} col={8} height={1} width={5}>
+                <div className="grid h-full place-items-center">
+                    <Image
+                        src={LogoWhite}
+                        alt="Twoday It Minds logo"
+                        quality={100}
+                        priority={true}
+                    />
+                </div>
+            </Framed>
+            <div className="absolute bottom-[-27vw] left-[-30vw] h-[60vw] w-[55vw]">
                 <Image
                     src={YellowHexagonShape}
                     alt="Yellow square shape"

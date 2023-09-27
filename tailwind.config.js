@@ -4,6 +4,7 @@
  */
 /* eslint-disable-next-line no-restricted-imports */
 import { nextui } from "@nextui-org/react";
+import containerQueries from "@tailwindcss/container-queries";
 
 /** @type {import('tailwindcss').Config} */
 const config = {
@@ -21,6 +22,7 @@ const config = {
         },
     },
     plugins: [
+        containerQueries,
         nextui({
             themes: {
                 dark: {

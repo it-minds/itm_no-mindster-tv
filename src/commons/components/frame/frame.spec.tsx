@@ -1,7 +1,7 @@
 import "@testing-library/jest-dom";
 import { describe } from "@jest/globals";
 import { render, screen } from "@testing-library/react";
-import Frame from "@/commons/frame/frame";
+import Frame from "@/commons/components/frame/frame";
 
 describe("Frame", () => {
     it("should render children", () => {
