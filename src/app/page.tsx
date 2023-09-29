@@ -7,6 +7,7 @@ import YellowHexagonShape from "@/commons/assets/shapes/hexagon-yellow.png";
 import BlueTriangleShape from "@/commons/assets/shapes/triangle-blue.png";
 import Framed from "@/commons/components/framed/framed";
 import ClockModule from "@/modules/clock/clock-module";
+import Chris from "@/commons/assets/images/Chris-modified.jpg";
 
 export default function Home() {
     return (
@@ -25,11 +26,16 @@ export default function Home() {
                     title="Ruter"
                 />
             </Framed>
+            {/*
             <Framed row={2} col={7} height={4} width={6}>
                 <IframeModule
                     src="https://www.yr.no/nb/innhold/1-72837/table.html"
                     title="Yr"
                 />
+            </Framed>
+            */}
+            <Framed row={1} col={7} height={6} width={6}>
+                <Image src={Chris} alt="RIP" quality="100" priority={true} />
             </Framed>
             <Framed row={6} col={2} height={1} width={2}>
                 <ClockModule />
