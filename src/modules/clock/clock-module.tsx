@@ -14,7 +14,10 @@ const ClockModule: Module = () => {
                 ref={parentRef}
                 className="grid h-full w-full place-items-center"
             >
-                <span ref={textRef} className="block font-bold">
+                <span
+                    ref={textRef}
+                    className="block w-full font-bold leading-tight"
+                >
                     {hour}
                     <span className="animate-pulse">:</span>
                     {minute}

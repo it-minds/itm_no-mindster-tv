@@ -18,7 +18,7 @@ export const WithModule: Story = {
     args: {
         children: (
             <div className="col-start-4 col-end-10 row-start-2 row-end-5 rounded-3xl bg-amber-50 p-12 text-gray-900">
-                <h1 className="mb-8 text-5xl">Example module</h1>
+                <h1 className="mb-8 font-serif text-5xl">Example module</h1>
                 <p className="text-lg">
                     This is an example module placed between column 2 and 6 and
                     row 3 and 5

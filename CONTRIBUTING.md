@@ -21,6 +21,9 @@ a storybook story. This is to ensure that components are developed in isolation 
 You can run storybook with the following command:
 - `npm run storybook` to run storybook
 
+*NB:* As of writing, the storybook setup does not properly host the correct fonts. This is a known issue and
+will be fixed in the future.
+
 ## Committing
 
 This project uses [`husky`](https://typicode.github.io/husky/) to manage git hooks
@@ -62,6 +65,13 @@ you need to disable the eslint rule for that line with:
 ### Tips
 Most popular IDEs have plugins for tailwindcss that provide intelligent auto-completion
 relative to the tailwindcss theme configuration.
+
+## Environment variables
+
+This project has multiple environment variables checked in to source control as these
+does not contain any sensitive information yet. If you need to add a secret environment
+variable, you should create and add it to `.env.local` or `.env.{environment}.local` and
+exclude it from source control with `.gitignore`.
 
 ## Docker
 

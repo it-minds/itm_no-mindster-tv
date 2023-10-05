@@ -1,9 +1,48 @@
-import "../src/app/globals.css";
 import type { Preview, StoryContext, StoryFn } from "@storybook/react";
 import {
     withThemeByClassName,
     withThemeByDataAttribute,
 } from "@storybook/addon-styling";
+import localFont from "next/font/local";
+import "../src/app/globals.css";
+
+const franklinGothic = localFont({
+    variable: "--franklin-gothic",
+    src: [
+        {
+            weight: "400",
+            path: "../fonts/FranklinGothicATF-Regular.otf",
+        },
+        {
+            weight: "700",
+            path: "../fonts/FranklinGothicATF-Bold.otf",
+        },
+    ],
+});
+
+const bookmanOldStyle = localFont({
+    variable: "--bookman-old-style",
+    src: [
+        {
+            weight: "400",
+            path: "../fonts/BookmanOldStylePro-Regular.otf",
+        },
+        {
+            weight: "700",
+            path: "../fonts/BookmanOldStylePro-Bold.otf",
+        },
+        {
+            weight: "400",
+            style: "italic",
+            path: "../fonts/BookmanOldStylePro-Italic.otf",
+        },
+        {
+            weight: "700",
+            style: "italic",
+            path: "../fonts/BookmanOldStylePro-BoldIt.otf",
+        },
+    ],
+});
 
 const preview: Preview = {
     parameters: {
@@ -40,6 +79,14 @@ const fullscreenDecorator = (Story: StoryFn, context: StoryContext) => {
     );
 };
 
-export const decorators = [themeDecorator, fullscreenDecorator];
+const fontDecorator = (Story: StoryFn) => (
+    <div
+        className={`${`font-sans ${franklinGothic.variable} ${bookmanOldStyle.variable}`}`}
+    >
+        <Story />
+    </div>
+);
+
+export const decorators = [themeDecorator, fontDecorator, fullscreenDecorator];
 
 export default preview;
