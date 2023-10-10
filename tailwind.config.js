@@ -14,6 +14,13 @@ const config = {
     ],
     theme: {
         extend: {
+            animation: {
+                "spin-slow": "spin 120s linear infinite",
+            },
+            fontFamily: {
+                serif: ["var(--bookman-old-style)", "serif"],
+                sans: ["var(--franklin-gothic)", "sans-serif"],
+            },
             backgroundImage: {
                 "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
                 "gradient-conic":

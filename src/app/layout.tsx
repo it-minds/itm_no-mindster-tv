@@ -1,9 +1,7 @@
 import "./globals.css";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import Providers from "@/app/providers";
-
-const inter = Inter({ subsets: ["latin"] });
+import { bookmanOldStyle, franklinGothic } from "@/commons/assets/fonts/fonts";
 
 export const metadata: Metadata = {
     title: "Create Next App",
@@ -17,7 +15,9 @@ export default function RootLayout({
 }) {
     return (
         <html lang="en" className="dark">
-            <body className={inter.className}>
+            <body
+                className={`${franklinGothic.variable} ${bookmanOldStyle.variable} font-sans`}
+            >
                 <Providers>{children}</Providers>
             </body>
         </html>
