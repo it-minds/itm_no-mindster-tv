@@ -1,10 +1,16 @@
 import { useEffect, useMemo, useState } from "react";
-import { fetchOrders, Order } from "@/modules/lunch/api-client/api-client";
+import { fetchMenu, fetchOrders } from "@/modules/lunch/api-client/api-client";
 import { useQuery } from "@tanstack/react-query";
 import { formatDate } from "@/commons/helpers/datetime/datetime";
+import { MenuItem, Order } from "@/modules/lunch/api-client/types";
 
-type Meals = {
-    [mealType: string]: Order[];
+export type MealVariant = {
+    menuItem: MenuItem;
+    orders: Order[];
+};
+
+export type Meals = {
+    [mealType: string]: MealVariant[];
 };
 
 const FULL_DAY_IN_MILLISECONDS = 24 * 60 * 60 * 1000;
@@ -12,12 +18,30 @@ const HOUR_IN_MILLISECONDS = 60 * 60 * 1000;
 const MINUTE_IN_MILLISECONDS = 60 * 1000;
 const SECOND_IN_MILLISECONDS = 1000;
 
-export const useLunchModule = (): { meals: Meals } => {
+type UseLunchModule = {
+    meals: Meals;
+    hasOrders: boolean;
+};
+
+export const useLunchModule = (): UseLunchModule => {
     const [date, setDate] = useState(new Date());
 
-    const { data: orders } = useQuery<unknown, unknown, Order[]>({
+    const { data: orders, isLoading: ordersAreLoading } = useQuery<
+        unknown,
+        unknown,
+        Order[]
+    >({
         queryKey: ["orders", formatDate(date)],
         queryFn: () => fetchOrders(date),
+    });
+
+    const { data: menuItems, isLoading: menuItemsAreLoading } = useQuery<
+        unknown,
+        unknown,
+        MenuItem[]
+    >({
+        queryKey: ["menuItems", formatDate(date)],
+        queryFn: () => fetchMenu(date),
     });
 
     useEffect(() => {
@@ -37,31 +61,61 @@ export const useLunchModule = (): { meals: Meals } => {
         return () => clearTimeout(timeout);
     }, [date]);
 
-    const meals = useMemo(() => sortOrdersByMealType(orders), [orders]);
+    const meals = useMemo(
+        () => sortOrdersIntoMeals(menuItems, orders),
+        [menuItems, orders],
+    );
+    const hasOrders = useMemo(() => Object.keys(meals).length > 0, [meals]);
 
     return {
         meals,
+        hasOrders,
     };
 };
 
-function sortOrdersByMealType(orders: Order[] | undefined) {
-    if (!orders) {
+function sortOrdersIntoMeals(
+    menuItems: MenuItem[] | undefined,
+    orders: Order[] | undefined,
+) {
+    if (!orders || !menuItems) {
         return {};
     }
 
-    return orders.reduce((acc: Meals, order) => {
-        const { mealType, orderStatus } = order;
+    return menuItems.reduce((meals: Meals, menuItem) => {
+        const { mealType, diet } = menuItem;
 
-        if (orderStatus !== "PROCURED") {
-            return acc;
+        const ordersForMeal = orders.filter(
+            (order) =>
+                order.mealType === mealType.name &&
+                order.orderStatus === "PROCURED" &&
+                order.diet === diet.name,
+        );
+
+        if (ordersForMeal.length === 0) {
+            return meals;
         }
 
-        if (!acc[mealType]) {
-            acc[mealType] = [];
+        if (meals[mealType.name] === undefined) {
+            return {
+                ...meals,
+                [mealType.name]: [
+                    {
+                        menuItem,
+                        orders: ordersForMeal,
+                    },
+                ],
+            };
         }
 
-        acc[mealType].push(order);
-
-        return acc;
+        return {
+            ...meals,
+            [mealType.name]: [
+                ...meals[mealType.name],
+                {
+                    menuItem,
+                    orders: ordersForMeal,
+                },
+            ],
+        };
     }, {});
 }
