@@ -3,28 +3,24 @@ import { MealVariant } from "@/modules/lunch/lunch-module.hook";
 import { useMeal } from "@/modules/lunch/meal/hook/meal.hook";
 import { Chip } from "@nextui-org/chip";
 
-const Meal = ({
-    mealType,
-    variants,
-}: {
-    mealType: Order["mealType"];
-    variants: MealVariant[];
-}) => {
-    const { activeVariant, hasOrders } = useMeal(variants);
+const Meal = ({ meal }: { meal: MealVariant }) => {
+    const { hasOrders } = useMeal(meal);
 
     return (
-        <div className="row-span-2 grid h-full grid-rows-[inherit] gap-y-[inherit] @container">
-            <div className="flex flex-col gap-y-2">
-                <h2 className="font-serif text-lg">{mealType}</h2>
-                <p className="text-sm text-gray-400 @xs:text-base">
-                    {variants[activeVariant].menuItem.description}
+        <div className="grid h-full grid-rows-[max-content_1fr_max-content] gap-y-4 @container">
+            <div className="flex flex-col gap-y-3">
+                <h2 className="font-serif text-xl @xs:text-2xl">
+                    {meal.menuItem.mealType.name}
+                </h2>
+                <p className="text-lg text-gray-400 @xs:text-xl">
+                    {meal.menuItem.description}
                 </p>
             </div>
             {hasOrders ? (
                 <ul className="flex h-max flex-wrap gap-2">
-                    {variants[activeVariant].orders.map((order) => (
+                    {meal.orders.map((order) => (
                         <li key={order.firstName}>
-                            <Chip variant="shadow" size="sm" color="secondary">
+                            <Chip variant="shadow" color="secondary">
                                 {order.firstName}
                             </Chip>
                         </li>

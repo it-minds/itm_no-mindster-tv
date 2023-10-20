@@ -14,69 +14,47 @@ const mockedUseMeal = useMeal as jest.MockedFunction<typeof useMeal>;
 describe("Meal", () => {
     it("should render meal type", () => {
         // given
-        const mealType = "Varmt";
-
         mockedUseMeal.mockReturnValue({
-            activeVariant: 0,
             hasOrders: false,
         });
 
         // when
         const { getByText } = render(
             <Meal
-                mealType={mealType}
-                variants={[
-                    {
-                        menuItem: createMenuItem("Varmt", "Vanlig"),
-                        orders: [createOrder("Varmt", "PROCURED")],
-                    },
-                ]}
+                meal={{
+                    menuItem: createMenuItem("Varmt", "Vanlig"),
+                    orders: [createOrder("Varmt", "PROCURED")],
+                }}
             />,
         );
 
         // then
-        expect(getByText(mealType)).toBeInTheDocument();
+        expect(getByText("Varmt")).toBeInTheDocument();
     });
 
-    it("should render meal description of active variant", () => {
+    it("should render meal description meal", () => {
         // given
         const mealType = "Varmt";
-        const variants = [
-            {
-                menuItem: createMenuItem(
-                    "Varmt",
-                    "Vanlig",
-                    formatDate(new Date()),
-                    "Test description of regular variant",
-                ),
-                orders: [],
-            },
-            {
-                menuItem: createMenuItem(
-                    "Varmt",
-                    "Vegetar",
-                    formatDate(new Date()),
-                    "Test description of vegetarian variant",
-                ),
-                orders: [],
-            },
-        ];
+        const meal = {
+            menuItem: createMenuItem(
+                "Varmt",
+                "Vanlig",
+                formatDate(new Date()),
+                "Test description of regular variant",
+            ),
+            orders: [],
+        };
         const activeVariant = 1;
 
         mockedUseMeal.mockReturnValue({
-            activeVariant,
             hasOrders: true,
         });
 
         // when
-        const { getByText } = render(
-            <Meal mealType={mealType} variants={variants} />,
-        );
+        const { getByText } = render(<Meal meal={meal} />);
 
         // then
-        expect(
-            getByText(variants[activeVariant].menuItem.description),
-        ).toBeInTheDocument();
+        expect(getByText(meal.menuItem.description)).toBeInTheDocument();
     });
 
     it("should render first name of everybody who ordered the active variant", async () => {
@@ -88,27 +66,22 @@ describe("Meal", () => {
             createOrder("Varmt", "PROCURED"),
         ];
 
-        const variants = [
-            {
-                menuItem: createMenuItem(
-                    "Varmt",
-                    "Vanlig",
-                    formatDate(new Date()),
-                    "Test description of regular variant",
-                ),
-                orders,
-            },
-        ];
+        const meal = {
+            menuItem: createMenuItem(
+                "Varmt",
+                "Vanlig",
+                formatDate(new Date()),
+                "Test description of regular variant",
+            ),
+            orders,
+        };
 
         mockedUseMeal.mockReturnValue({
-            activeVariant: 0,
             hasOrders: true,
         });
 
         // when
-        const { getByText } = render(
-            <Meal mealType={mealType} variants={variants} />,
-        );
+        const { getByText } = render(<Meal meal={meal} />);
 
         // then
         await waitFor(() => {
@@ -120,37 +93,24 @@ describe("Meal", () => {
     it("should render no orders message if no orders", () => {
         // given
         const mealType = "Varmt";
-        const variants = [
-            {
-                menuItem: createMenuItem(
-                    "Varmt",
-                    "Vanlig",
-                    formatDate(new Date()),
-                    "Test description of regular variant",
-                ),
-                orders: [],
-            },
-            {
-                menuItem: createMenuItem(
-                    "Varmt",
-                    "Vegetar",
-                    formatDate(new Date()),
-                    "Test description of vegetarian variant",
-                ),
-                orders: [],
-            },
-        ];
+        const meal = {
+            menuItem: createMenuItem(
+                "Varmt",
+                "Vanlig",
+                formatDate(new Date()),
+                "Test description of regular variant",
+            ),
+            orders: [],
+        };
+
         const activeVariant = 1;
 
         mockedUseMeal.mockReturnValue({
-            activeVariant,
             hasOrders: false,
         });
 
         // when
-        const { getByText } = render(
-            <Meal mealType={mealType} variants={variants} />,
-        );
+        const { getByText } = render(<Meal meal={meal} />);
 
         // then
         expect(getByText("Ingen bestillinger")).toBeInTheDocument();

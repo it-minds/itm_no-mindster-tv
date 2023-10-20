@@ -3,6 +3,9 @@ import { fetchMenu, fetchOrders } from "@/modules/lunch/api-client/api-client";
 import { useQuery } from "@tanstack/react-query";
 import { formatDate } from "@/commons/helpers/datetime/datetime";
 import { MenuItem, Order } from "@/modules/lunch/api-client/types";
+import { useContainerQuery } from "react-container-query";
+import { useReactiveCarousel } from "@/commons/hooks/reactive-carousel/use-reactive-carousel";
+import { ResponsiveType } from "react-multi-carousel";
 
 export type MealVariant = {
     menuItem: MenuItem;
@@ -19,12 +22,14 @@ const MINUTE_IN_MILLISECONDS = 60 * 1000;
 const SECOND_IN_MILLISECONDS = 1000;
 
 type UseLunchModule = {
+    ref: React.RefObject<HTMLDivElement>;
+    responsive: ResponsiveType;
     meals: Meals;
     hasOrders: boolean;
 };
 
 export const useLunchModule = (): UseLunchModule => {
-    const [date, setDate] = useState(new Date());
+    const { date } = useCurrentDate();
 
     const { data: orders, isLoading: ordersAreLoading } = useQuery<
         unknown,
@@ -44,6 +49,46 @@ export const useLunchModule = (): UseLunchModule => {
         queryFn: () => fetchMenu(date),
     });
 
+    const meals = useMemo(
+        () => sortOrdersIntoMeals(menuItems, orders),
+        [menuItems, orders],
+    );
+    const hasOrders = useMemo(() => Object.keys(meals).length > 0, [meals]);
+    const numberOfMeals = useMemo(() => {
+        return Object.entries(meals).reduce((acc, [mealType, mealVariants]) => {
+            return acc + mealVariants.length;
+        }, 0);
+    }, [meals]);
+
+    const { ref, responsive } = useReactiveCarousel(
+        [
+            {
+                minWidth: 0,
+                maxWidth: 600,
+            },
+            {
+                minWidth: 601,
+                maxWidth: 900,
+            },
+            {
+                minWidth: 901,
+                maxWidth: 5000,
+            },
+        ],
+        numberOfMeals,
+    );
+
+    return {
+        ref,
+        responsive,
+        meals,
+        hasOrders,
+    };
+};
+
+const useCurrentDate = () => {
+    const [date, setDate] = useState(new Date());
+
     useEffect(() => {
         const timeOfDayInMilliseconds =
             date.getHours() * HOUR_IN_MILLISECONDS +
@@ -61,16 +106,7 @@ export const useLunchModule = (): UseLunchModule => {
         return () => clearTimeout(timeout);
     }, [date]);
 
-    const meals = useMemo(
-        () => sortOrdersIntoMeals(menuItems, orders),
-        [menuItems, orders],
-    );
-    const hasOrders = useMemo(() => Object.keys(meals).length > 0, [meals]);
-
-    return {
-        meals,
-        hasOrders,
-    };
+    return { date };
 };
 
 function sortOrdersIntoMeals(
